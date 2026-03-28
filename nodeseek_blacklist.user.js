@@ -2369,6 +2369,7 @@
         highlightBlacklisted();
         highlightFriends(); // 新增调用
         addFavoriteButton(); // 新增收藏按钮
+        addEditorEmojiButton(); // 编辑器顶部独立表情按钮
         processUserAvatars(); // 新增：处理用户头像信息显示
         replaceRelativeTimeWithAbsolute(); // 新增：替换相对时间为完整时间
         markViewedTitles();
@@ -5494,6 +5495,54 @@
         headerArea.appendChild(buttonContainer);
     }
 
+    function addEditorEmojiButton() {
+        const editorHeader = document.querySelector('#editor-body .tab-select.window_header');
+        if (!editorHeader) return;
+
+        const tabsWrap = editorHeader.querySelector(':scope > div');
+        if (!tabsWrap) return;
+
+        const existing = document.getElementById('ns-editor-emoji-btn');
+        if (existing) {
+            if (existing.parentNode === editorHeader) return;
+            existing.remove();
+        }
+
+        const button = document.createElement('a');
+        button.id = 'ns-editor-emoji-btn';
+        button.href = 'javascript:void(0)';
+        button.title = '表情包';
+        button.className = 'editor-top-button';
+        button.textContent = '表情';
+        button.style.marginLeft = '10px';
+        button.style.padding = '0 10px';
+        button.style.minWidth = 'auto';
+        button.style.width = 'auto';
+        button.style.display = 'inline-flex';
+        button.style.alignItems = 'center';
+        button.style.justifyContent = 'center';
+        button.style.whiteSpace = 'nowrap';
+        button.style.fontSize = '13px';
+        button.style.fontWeight = '600';
+        button.style.backgroundColor = 'rgba(37, 99, 235, 0.12)';
+        button.style.color = '#2563eb';
+        button.onclick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.NodeSeekEmoji && typeof window.NodeSeekEmoji.open === 'function') {
+                window.NodeSeekEmoji.open();
+            } else {
+                alert('表情功能未加载');
+            }
+        };
+
+        if (tabsWrap.nextSibling) {
+            editorHeader.insertBefore(button, tabsWrap.nextSibling);
+        } else {
+            editorHeader.appendChild(button);
+        }
+    }
+
     // 防止重复记录的变量
     let lastRecordedUrl = '';
     let lastRecordedTime = 0;
@@ -6780,6 +6829,7 @@
         nsBlacklistNavTimer = setTimeout(() => {
             nsBlacklistNavTimer = null;
             ensureBlacklistNavEntryAndMeta();
+            addEditorEmojiButton();
             rewriteJumpLinks();
         }, 200);
     }
