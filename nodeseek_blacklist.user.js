@@ -20,7 +20,7 @@
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/Clockin.js
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/focus.js
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/quickReply.js
-// @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/emojis.js
+// @require      https://raw.githubusercontent.com/Pd1021/nodeseek-userscript/refs/heads/main/emojis.js
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/login.js
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/vps.js
 // @require      https://raw.githubusercontent.com/dajie111/nodeseek-userscript/refs/heads/main/History.js
