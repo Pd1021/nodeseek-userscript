@@ -180,6 +180,31 @@
 			return null;
 		},
 
+		hidePanel(){
+			const panel = document.getElementById(this.panelId);
+			if(panel) panel.style.display = 'none';
+		},
+
+		bindOutsideClose(panel){
+			if(this._outsideCloseHandler){
+				document.removeEventListener('mousedown', this._outsideCloseHandler, true);
+				document.removeEventListener('touchstart', this._outsideCloseHandler, true);
+			}
+
+			this._outsideCloseHandler = (e)=>{
+				const target = e.target;
+				if(!panel || panel.style.display === 'none') return;
+				if(target && panel.contains(target)) return;
+				if(target && target.closest && target.closest('#emoji-btn, #ns-editor-emoji-btn, #ns-emoji-launcher')) return;
+				this.hidePanel();
+			};
+
+			setTimeout(()=>{
+				document.addEventListener('mousedown', this._outsideCloseHandler, true);
+				document.addEventListener('touchstart', this._outsideCloseHandler, true);
+			}, 0);
+		},
+
 		insertMarkdown(url){
 			const ed = this.findEditor();
 			if(!ed){ alert('未找到评论编辑器'); return; }
@@ -464,7 +489,7 @@
 			let panel = document.getElementById(this.panelId);
 			// 如果弹窗已存在且显示，则关闭它
 			if(panel && panel.style.display !== 'none'){
-				panel.style.display = 'none';
+				this.hidePanel();
 				return;
 			}
 			// 如果弹窗存在但隐藏，则显示它并重置位置
@@ -475,6 +500,7 @@
 				panel.style.top = 'auto';
 				panel.style.right = '24px';
 				panel.style.bottom = '320px';
+				this.bindOutsideClose(panel);
 				return; 
 			}
 			// 创建新弹窗
@@ -493,7 +519,8 @@
 				</div>
 			`;
 			document.body.appendChild(panel);
-			panel.querySelector('#ns-emoji-close').onclick = ()=>{ panel.style.display='none'; };
+			panel.querySelector('#ns-emoji-close').onclick = ()=>{ this.hidePanel(); };
+			this.bindOutsideClose(panel);
 			// 载入类目后自动加载列表
 			this.loadCategories().then(()=> this.loadList());
 
